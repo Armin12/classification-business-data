@@ -1,6 +1,8 @@
 # classification-business-data
 
-Here, we have introduced a general framework for getting, cleaning, visualizing, preprocessing, and classification of business data. This framework contains:
+A a general framework for getting, cleaning, visualizing, preprocessing, and classification of business data
+
+This framework contains:
 
 - Different strategies to handle missing data depending on the dataset and problem
 - Standard procedures for cleaning and preprocessing of data
