@@ -4,12 +4,12 @@ A a general framework for getting, cleaning, visualizing, preprocessing, and cla
 
 This framework contains:
 
-- Different strategies to handle missing data depending on the dataset and problem
+- Different strategies to handle missing data
 - Standard procedures for cleaning and preprocessing of data
-- Different classifiers for simple and complicated problems (e.g. Random Forest, KNN, Linear/RBF SVM, AdaBoost)
+- Different classification estimators (e.g. Random Forest, KNN, Linear/RBF SVM, AdaBoost) for simple and complicated problems
 - Different methods for evaluating classification performance
 - Different ways to visualize data and showing correlation of features
 
-Functions available in GettingCleaningData.py handle loading, data integration, and data sampling too. 
+Functions available in GettingCleaningData.py also handle loading, data integration, and data sampling.
 
-The data used in the example are extracted from [here](https://opendata.datainfogreffe.fr/explore/?q=Chiffres+Cl%C3%A9s&sort=modified). T and NE are arbitrary columns with numerical values over the last three years.
+The example in main.py is based on open datasets in [this](https://opendata.datainfogreffe.fr/explore/?q=Chiffres+Cl%C3%A9s&sort=modified) page. T and NE can be any arbitrary column containing numerical values. In each dataset, for each numerical variable, three separate columns are associated which include data from the last three years.
