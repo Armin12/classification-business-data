@@ -1,4 +1,3 @@
-
 import csv
 import numpy as np
 import pandas as pd
@@ -9,6 +8,7 @@ from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.linear_model import BayesianRidge
 from sklearn.impute import SimpleImputer
 import random
+
 
 def read_csv_to_dataframe(file_name):
     """Read csv data and save it in a dataframe
@@ -32,18 +32,18 @@ def read_csv_to_dataframe(file_name):
         has_header = csv.Sniffer().has_header(sample)
         print(has_header)
         deduced_dialect = csv.Sniffer().sniff(sample)
-    
+
     # Read the csv file and store it in a list
-    csv_list=[]
+    csv_list = []
     with open(file_name, 'r', encoding="utf8") as csvfile:
         reader = csv.reader(csvfile, deduced_dialect)
-    
+
         for row in reader:
             csv_list.append(row)
-    
+
     # Transform the list into a Pandas dataframe
-    csv_df = pd.DataFrame(csv_list[1:], columns = csv_list[0])
-    
+    csv_df = pd.DataFrame(csv_list[1:], columns=csv_list[0])
+
     return csv_df
 
 
@@ -95,8 +95,8 @@ def sample_dataset(concat_df, no_sample):
     return sampled_dataset
 
 
-def data_cleaning(concat_df, numeric_cols, nonnumeric_cols, threshold=2, 
-                  imputation_type='SimpleImputer', interpolation_list = None):
+def data_cleaning(concat_df, numeric_cols, nonnumeric_cols, threshold=2,
+                  imputation_type='SimpleImputer', interpolation_list=None):
     """Cleaning the data
     Convert numeric columns to numeric, delete rows with many missing values, 
     and impute rest of missing values.
@@ -124,33 +124,34 @@ def data_cleaning(concat_df, numeric_cols, nonnumeric_cols, threshold=2,
     """
     # Convert some columns to nunmeric
     concat_df[numeric_cols] = concat_df[numeric_cols].apply(pd.to_numeric)
-    
+
     # Handling missing values
-    concat_df = concat_df.dropna(axis=0, subset=numeric_cols, how='all', 
-                                 thresh=threshold) # Deletion: remove rows with less than 2 (threshold) non-NaN elements
-    
-    concat_df = concat_df.groupby(nonnumeric_cols).mean().reset_index() # Merge rows with the same non-numeric properties
-    
+    concat_df = concat_df.dropna(axis=0, subset=numeric_cols, how='all',
+                                 thresh=threshold)  # Deletion: remove rows with less than 2 (threshold) non-NaN elements
+
+    concat_df = concat_df.groupby(
+        nonnumeric_cols).mean().reset_index()  # Merge rows with the same non-numeric properties
+
     if interpolation_list is not None:
         for interpolation_cols in interpolation_list:
-            concat_df[interpolation_cols] = concat_df[interpolation_cols].interpolate(method='linear', limit_direction='both', axis=1)
+            concat_df[interpolation_cols] = concat_df[interpolation_cols].interpolate(method='linear',
+                                                                                      limit_direction='both', axis=1)
     else:
 
-        if imputation_type == 'IterativeRandomForest':# Imputation
+        if imputation_type == 'IterativeRandomForest':  # Imputation
             impute_estimator = ExtraTreesRegressor(n_estimators=10, random_state=0)
             imp = IterativeImputer(max_iter=20, random_state=0, estimator=impute_estimator)
         elif imputation_type == 'IterativeBayesianRidge':
             impute_estimator = BayesianRidge()
             imp = IterativeImputer(max_iter=20, random_state=0, estimator=impute_estimator)
-        elif imputation_type == 'KNNImputer':# TODO: Does it need normalization?
+        elif imputation_type == 'KNNImputer':  # TODO: Does it need normalization?
             imp = KNNImputer(n_neighbors=5, weights="distance")
         else:
             imp = SimpleImputer(missing_values=np.nan, strategy='mean')
-        
+
         concat_df[numeric_cols] = imp.fit_transform(concat_df[numeric_cols])
     # TODO: pipline to test on dataset with missed values
-    
-    concat_df = concat_df.dropna()
-    
-    return concat_df
 
+    concat_df = concat_df.dropna()
+
+    return concat_df
