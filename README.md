@@ -4,7 +4,7 @@ A a general framework for getting, cleansing, visualizing, preprocessing, and cl
 
 This framework contains:
 
-- Getting, integrating, and sampling data
+- Functions for getting, integrating, and sampling data
 - Multiple strategies to handle missing data
 - Standard data cleaning and preprocessing procedures
 - Different methods to visualize data and determine correlations in features
